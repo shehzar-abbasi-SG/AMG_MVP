@@ -1,14 +1,16 @@
 'use client'
+import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import Link from "next/link";
 import {useRouter} from "next/navigation"
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-export default function Signup() {
+export default function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+  const {login} = useAuth()
   
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -27,12 +29,10 @@ export default function Signup() {
       }
 
       const { token } = await response.json();
-
-      // Save token to localStorage (or any other storage mechanism)
-      localStorage.setItem("authToken", token);
+      login(token)
 
       toast.success("Login successful! Redirecting to Home...");
-      router.push("/"); // Redirect to Home page
+      router.push("/"); 
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);

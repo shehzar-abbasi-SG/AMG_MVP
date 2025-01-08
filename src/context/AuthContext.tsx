@@ -3,7 +3,6 @@ import React, { createContext, useContext, useEffect, useState, ReactNode } from
 
 interface AuthContextProps {
   token: string | null;
-  isAuthenticated: boolean;
   login: (token: string) => void;
   logout: () => void;
 }
@@ -34,7 +33,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     <AuthContext.Provider
       value={{
         token,
-        isAuthenticated: !!token,
         login,
         logout,
       }}

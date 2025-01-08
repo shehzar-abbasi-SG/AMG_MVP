@@ -13,10 +13,9 @@ function Header() {
     const router = useRouter();
     const { cartItems,removeFromCart,getCheckoutUrl } = useCart();
     const [isCartOpen, setIsCartOpen] = useState(false);
-    const {isAuthenticated} = useAuth()
+    const {token,logout} = useAuth()
     const handleLogout = () => {
-        localStorage.removeItem("authToken");
-        router.push("/login");
+        logout()
     };
     const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
    
@@ -60,7 +59,7 @@ function Header() {
       </Link>
     </div>
     <div className="flex items-center gap-6">
-    {isAuthenticated? 
+    {token? 
       <>
         <Link href={"/single-page-form"} className="bg-white text-black border border-black p-2 rounded-full">
           Submit Media
