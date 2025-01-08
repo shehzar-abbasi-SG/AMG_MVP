@@ -6,12 +6,14 @@ import {useRouter} from "next/navigation"
 import { useCart } from '@/context/CartContext'
 import { ShoppingCartIcon, XMarkIcon,MinusIcon} from '@heroicons/react/16/solid'
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
+import { useAuth } from '@/context/AuthContext'
 
 
 function Header() {
     const router = useRouter();
     const { cartItems,removeFromCart,getCheckoutUrl } = useCart();
     const [isCartOpen, setIsCartOpen] = useState(false);
+    const {isAuthenticated} = useAuth()
     const handleLogout = () => {
         localStorage.removeItem("authToken");
         router.push("/login");
@@ -58,6 +60,8 @@ function Header() {
       </Link>
     </div>
     <div className="flex items-center gap-6">
+    {isAuthenticated? 
+      <>
         <Link href={"/single-page-form"} className="bg-white text-black border border-black p-2 rounded-full">
           Submit Media
         </Link>
@@ -72,7 +76,10 @@ function Header() {
             </span>
         )}
         </button>
+       
         <button onClick={handleLogout} className="text-black hover:underline">Logout</button>
+      </>
+      : <button onClick={()=>router.push('/login')} className="text-black hover:underline">Login</button>}
     </div>
     <Dialog
         open={isCartOpen}

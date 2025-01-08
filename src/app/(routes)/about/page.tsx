@@ -9,7 +9,7 @@ async function getAboutPageData():Promise<AboutPageData> {
     try {
       const response =  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/about`,{
         next: {
-          revalidate: 3600 // revalidate every hour
+          revalidate: 3600 
         }
       });
   
