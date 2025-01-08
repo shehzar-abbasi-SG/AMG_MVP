@@ -1,38 +1,38 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { AboutPageData, parseRichText } from "@/types/about";
-import Image from "next/image";
+// import { AboutPageData, parseRichText } from "@/types/about";
+// import Image from "next/image";
 
 
 
-async function getAboutPageData():Promise<AboutPageData> {
-    try {
-      const response =  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/about`,{
-        next: {
-          revalidate: 3600 // revalidate every hour
-        }
-      });
+// async function getAboutPageData():Promise<AboutPageData> {
+//     try {
+//       const response =  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/about`,{
+//         next: {
+//           revalidate: 3600 // revalidate every hour
+//         }
+//       });
   
-      if (!response.ok) {
-        throw new Error('Failed to fetch About page data');
-      }
+//       if (!response.ok) {
+//         throw new Error('Failed to fetch About page data');
+//       }
   
-      const data = await response.json();
+//       const data = await response.json();
 
-      return data;
-    } catch (error) {
-      console.error('Error:', error);
-      throw error;
-    }
-}
+//       return data;
+//     } catch (error) {
+//       console.error('Error:', error);
+//       throw error;
+//     }
+// }
   
 export default async function AboutPage() {
-    const data = await getAboutPageData();
+    // const data = await getAboutPageData();
 
 
 return (
     <div>
-      <section className="relative">
+      {/* <section className="relative">
         <Image
           src={data.heroImage.url}
           alt={data.heroImage.altText || 'Hero image'}
@@ -45,8 +45,8 @@ return (
             {data.heroTitle}
           </h1>
         </div>
-      </section>
-      <div className="max-w-7xl mx-auto py-16 px-4">
+      </section> */}
+      {/* <div className="max-w-7xl mx-auto py-16 px-4">
         {data.aboutUsSections.map((section, index) => {
           const richTextContent = parseRichText(section.subtitle);
           const textContent = richTextContent?.children?.[0]?.children?.[0]?.value || '';
@@ -76,7 +76,7 @@ return (
             </div>
           );
         })}
-      </div>
+      </div> */}
     </div>
 
 );
