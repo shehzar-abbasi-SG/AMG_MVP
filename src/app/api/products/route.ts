@@ -6,7 +6,7 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   const query = `
     {
-      products(first: 10) {
+      products(first: 10,query: "tag:merch") {
         edges {
           node {
             id

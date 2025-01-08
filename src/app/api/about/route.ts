@@ -12,7 +12,7 @@ export async function GET() {
           type
           fields {
             key
-            value
+            value 
             references(first: 20) {
               nodes {
                 ... on Metaobject {

@@ -1,23 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// import Image from "next/image";
 
 import { AboutPageData, parseRichText } from "@/types/about";
 import Image from "next/image";
 
-// interface AboutUsField {
-//     key: string;
-//     value: string;
-//     reference?: {
-//       image: {
-//         url: string;
-//         altText: string;
-//       };
-//     };
-//   }
-  
-// interface AboutPageProps {
-// fields: AboutUsField[];
-// }
 
 
 async function getAboutPageData():Promise<AboutPageData> {

@@ -1,12 +1,26 @@
-// src/app/api/cart/[id]/add/route.ts
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { SHOPIFY_ACCESS_TOKEN, SHOPIFY_API_URL } from "@/config";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request, { params }: { params: { id: string } }) {
-  const id  = decodeURIComponent(params.id);
-  const { variantId, quantity } = await req.json();
-  console.log('id ==> ', id);
+  const id = decodeURIComponent(params.id);
+  const { variantId, quantity, properties } = await req.json();
+
   try {
+    // Build line item dynamically
+    const line = {
+      quantity,
+      merchandiseId: variantId,
+      ...(properties && {
+        attributes: Object.entries(properties)
+          .filter(([_i, value]) => value) 
+          .map(([key, value]) => ({ key, value })),
+          
+      }),
+    };
+
+    console.log("line ==> ", line);
+
     const response = await fetch(`${SHOPIFY_API_URL}`, {
       method: "POST",
       headers: {
@@ -15,14 +29,8 @@ export async function POST(req: Request, { params }: { params: { id: string } })
       },
       body: JSON.stringify({
         query: `
-          mutation {
-            cartLinesAdd(
-              cartId: "${id}",
-              lines: [{ 
-                quantity: ${quantity}, 
-                merchandiseId: "${variantId}"
-              }]
-            ) {
+          mutation cartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
+            cartLinesAdd(cartId: $cartId, lines: $lines) {
               cart {
                 id
                 lines(first: 5) {
@@ -30,11 +38,15 @@ export async function POST(req: Request, { params }: { params: { id: string } })
                     node {
                       id
                       quantity
+                      attributes {
+                        key
+                        value
+                      }
                       merchandise {
                         ... on ProductVariant {
                           id
                           title
-                           priceV2 {
+                          priceV2 {
                             amount
                             currencyCode
                           }
@@ -47,15 +59,27 @@ export async function POST(req: Request, { params }: { params: { id: string } })
             }
           }
         `,
+        variables: {
+          cartId: id,
+          lines: [line],
+        },
       }),
     });
 
     const data = await response.json();
-    if (data.errors) throw new Error(data.errors[0].message);
+
+    if (data.errors) {
+      console.error("GraphQL Error:", data.errors);
+      throw new Error(data.errors[0].message);
+    }
+
+    if (!data.data?.cartLinesAdd?.cart) {
+      throw new Error("Unexpected API response");
+    }
 
     return NextResponse.json(data.data.cartLinesAdd.cart);
   } catch (error) {
     console.error("Error adding item to cart:", error);
-    return NextResponse.json({ error: "Failed to add item to cart" }, { status: 500 });
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

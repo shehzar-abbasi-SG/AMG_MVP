@@ -21,7 +21,7 @@ interface CartContextProps {
   cartItems: CartItem[];
   createCart: () => Promise<void>;
   fetchCart: () => Promise<void>;
-  addToCart: (merchandiseId: string, quantity: number) => Promise<void>;
+  addToCart: (merchandiseId: string, quantity: number,isMediaSubmission?:boolean,properties?:any) => Promise<void>;
   removeFromCart: (lineId: string) => Promise<void>;
   getCheckoutUrl:() => Promise<string | null>;
 }
@@ -78,7 +78,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const addToCart = async (merchandiseId: string, quantity: number) => {
+  const addToCart = async (merchandiseId: string, quantity: number,isMediaSubmission?:boolean,properties?:any) => {
     console.log('merchandiseId :==> ', merchandiseId);
     console.log('quantity :==> ', quantity);
 
@@ -87,11 +87,22 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       if (!existingCartId) {
         existingCartId = await createCart()
       }
+      const payload = {
+        variantId: merchandiseId,
+        quantity,
+        ...(isMediaSubmission && properties && {
+          properties: {
+            ...properties,
+            customTitle: `Media Submission - ${properties.mediaType}`, 
+            customPrice: properties.price,
+          },
+        }),
+      };
       const encodedCartId = encodeURIComponent(existingCartId!)
       const response = await fetch(`/api/cart/${encodedCartId}/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ variantId:merchandiseId, quantity }),
+        body:  JSON.stringify(payload),
       });
       const data = await response.json();
       console.log('data ==> ', data);

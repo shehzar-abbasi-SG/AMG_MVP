@@ -58,6 +58,9 @@ function Header() {
       </Link>
     </div>
     <div className="flex items-center gap-6">
+        <Link href={"/single-page-form"} className="bg-white text-black border border-black p-2 rounded-full">
+          Submit Media
+        </Link>
         <button
         onClick={() => setIsCartOpen(true)}
         className="relative text-black"
@@ -129,6 +132,7 @@ function Header() {
                 )}
               </ul>
               <div className="mt-4 flex items-center justify-center gap-x-2">
+               
                 <button
                   onClick={handleCheckout} // Redirect to Shopify checkout
                   className="bg-black text-white p-2 rounded"
