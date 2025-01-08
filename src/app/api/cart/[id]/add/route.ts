@@ -2,8 +2,9 @@
 import { SHOPIFY_ACCESS_TOKEN, SHOPIFY_API_URL } from "@/config";
 import { NextResponse } from "next/server";
 
-export async function POST(req: Request, { params }: { params: { id: string } }) {
-  const id = decodeURIComponent(params.id);
+export async function POST(req: Request, { params }: { params: Promise<{ id: string }>}) {
+  
+  const id = decodeURIComponent((await params).id);
   const { variantId, quantity, properties } = await req.json();
 
   try {
