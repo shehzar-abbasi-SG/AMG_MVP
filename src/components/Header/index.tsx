@@ -11,7 +11,7 @@ import { useAuth } from '@/context/AuthContext'
 
 function Header() {
     const router = useRouter();
-    const { cartItems,removeFromCart,getCheckoutUrl } = useCart();
+    const { cartItems,removeFromCart,checkoutUrl } = useCart();
     const [isCartOpen, setIsCartOpen] = useState(false);
     const {token,logout} = useAuth()
     const handleLogout = () => {
@@ -21,7 +21,7 @@ function Header() {
    
     const handleCheckout = async () => {
       try {
-        const url = await getCheckoutUrl();
+        const url = checkoutUrl
         if (url) {
           window.location.href = url; // Redirect to the checkout page
         } else {

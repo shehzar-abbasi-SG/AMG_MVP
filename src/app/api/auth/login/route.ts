@@ -38,13 +38,10 @@ export async function POST(req: NextRequest) {
 
     const data = await response.json();
 
-    if (data.data.customerAccessTokenCreate.customerUserErrors.length) {
-      return NextResponse.json(
-        { error: data.data.customerAccessTokenCreate.customerUserErrors[0].message },
-        { status: 400 }
-      );
+    if (data.errors || data.data.customerUserErrors?.length) {
+      const errors = data.errors || data.data.customerUserErrors;
+      return NextResponse.json({ error: errors[0]?.message || "Error updating address." }, { status: 400 });
     }
-
     return NextResponse.json({
       message: "Login successful",
       token: data.data.customerAccessTokenCreate.customerAccessToken,

@@ -2,6 +2,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { useAuth } from "./AuthContext";
 
 interface CartItem {
     id: string;
@@ -18,6 +19,7 @@ interface CartItem {
 
 interface CartContextProps {
   cartId: string | null;
+  checkoutUrl: string | null;
   cartItems: CartItem[];
   createCart: () => Promise<void>;
   fetchCart: () => Promise<void>;
@@ -31,14 +33,19 @@ const CartContext = createContext<CartContextProps | undefined>(undefined);
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cartId, setCartId] = useState<string | null>(null);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [checkoutUrl,setCheckoutUrl] = useState<string|null>("")
+  const {token} = useAuth()
 
-  // Load cart ID from localStorage on mount
+
   useEffect(() => {
     const storedCartId = localStorage.getItem("cartId");
+    const storedCheckoutUrl = localStorage.getItem("checkoutUrl");
     if (storedCartId) {
-      console.log('storedCartId :>> ', storedCartId);
       setCartId(storedCartId);
       fetchCart(); 
+    }
+    if(storedCheckoutUrl){
+      setCheckoutUrl(storedCheckoutUrl);
     }
   }, []);
 
@@ -48,19 +55,26 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       localStorage.setItem("cartId", cartId);
       fetchCart(); 
     }
-  }, [cartId]);
+    if(checkoutUrl){
+      localStorage.setItem("checkoutUrl", checkoutUrl);
+    }
+  }, [cartId,checkoutUrl]);
 
   // Create a new cart
   const createCart = async () => {
+    
     try {
       const response = await fetch("/api/cart/create", {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body:  JSON.stringify({accessToken:token?.accessToken}),
       });
-      const data = await response.json();
-      setCartId(data.cartId);
-      return data.cartId
+      const {cartId,checkoutUrl} = await response.json();
+      setCartId(cartId);
+      setCheckoutUrl(checkoutUrl)
+      return cartId
     } catch (error) {
-      console.error("Error creating cart:", error);
+      throw new Error(error as string)
     }
   };
 
@@ -72,16 +86,16 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       const encodedCartId = encodeURIComponent(cartId)
       const response = await fetch(`/api/cart/${encodedCartId}`);
       const data = await response.json();
-      setCartItems(data.lines.edges.map((edge: any) => edge.node));
+     if(data) setCartItems(data.lines.edges.map((edge: any) => edge.node));
     } catch (error) {
       console.error("Error fetching cart:", error);
     }
   };
+  console.log('cartId :>> ', cartId);
 
   const addToCart = async (merchandiseId: string, quantity: number,isMediaSubmission?:boolean,properties?:any) => {
     console.log('merchandiseId :==> ', merchandiseId);
     console.log('quantity :==> ', quantity);
-
     try {
       let existingCartId = cartId
       if (!existingCartId) {
@@ -136,8 +150,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       console.error("Cart ID is missing");
       return null;
     }
-
     try {
+
       const encodedCartId = encodeURIComponent(cartId)
       const response = await fetch(`/api/cart/${encodedCartId}/checkout`);
       const data = await response.json();
@@ -163,6 +177,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         addToCart,
         removeFromCart,
         getCheckoutUrl,
+        checkoutUrl
       }}
     >
       {children}

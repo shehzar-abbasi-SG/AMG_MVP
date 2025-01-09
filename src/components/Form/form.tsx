@@ -1,5 +1,5 @@
 'use client'
-// import { useCart } from '@/context/CartContext';
+import { useCart } from '@/context/CartContext';
 import React, { useState } from 'react';
 
 const MediaSubmissionForm = () => {
@@ -10,7 +10,7 @@ const MediaSubmissionForm = () => {
     { name: 'Cassette', price: 50 },
     { name: '8 Track', price: 50 },
   ];
-  // const {addToCart} = useCart()
+  const {addToCart} = useCart()
   // State to manage form data
   const [formData, setFormData] = useState({
     mediaType: '',
@@ -33,7 +33,7 @@ const MediaSubmissionForm = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form Data:', formData);
-    // addToCart(id,1,true,{...formData,price:'$70'})
+    addToCart("gid://shopify/ProductVariant/43526217236527",1,true,formData)
   };
 
   return (

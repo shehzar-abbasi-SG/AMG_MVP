@@ -25,10 +25,10 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     const data = await response.json();
 
     if (data.errors) {
-      console.error("Shopify API error:", data.errors);
+      console.log("Shopify API error:", data.errors);
       return NextResponse.json({ error: "Error fetching checkout URL" }, { status: 500 });
     }
-
+    console.log('data :>> ', data);
     const checkoutUrl = data.data.cart.checkoutUrl;
 
     if (!checkoutUrl) {
@@ -37,7 +37,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
 
     return NextResponse.json({ checkoutUrl });
   } catch (error) {
-    console.error("Error fetching checkout URL:", error);
+    console.log("Error fetching checkout URL:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

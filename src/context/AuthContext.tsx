@@ -1,33 +1,89 @@
 'use client'
+import { useRouter } from "next/navigation";
 import React, { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
+export type TToken ={
+  accessToken:string;
+  expiresAt: Date
+}
 interface AuthContextProps {
-  token: string | null;
-  login: (token: string) => void;
-  logout: () => void;
+  token: TToken | null;
+  login: (token: TToken) => void;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [token, setToken] = useState<string | null>(null);
+  const [token, setToken] = useState<TToken | null>(null);
+  // const [user,setUser] = useState()
+  const router = useRouter()
 
+  const validateCustomerToken = (customerToken:string|null, logoutCallback:()=>Promise<void>)=> {
+    console.log('customerToken :>> ', customerToken);
+    try {
+      if (!customerToken) {
+        logoutCallback();
+        return;
+      }
+  
+      const tokenData = JSON.parse(customerToken);
+      const { accessToken, expiresAt } = tokenData;
+  
+      if (!accessToken || !expiresAt) {
+        logoutCallback();
+        return;
+      }
+  
+      const expiryDate = new Date(expiresAt);
+      const now = new Date();
+  
+      if (expiryDate <= now) {
+        // Token expired, logout user
+        logoutCallback();
+      } else {
+        setToken(tokenData)
+        return tokenData;
+      }
+    } catch (error) {
+      console.error("Error validating customer token:", error);
+      logoutCallback();
+    }
+  }
   useEffect(() => {
     const storedToken = localStorage.getItem("customerToken");
-    if (storedToken) {
-      setToken(storedToken);
-    }
+    console.log('storedToken :>> ', storedToken);
+    validateCustomerToken(storedToken,logout)
   }, []);
-
-  const login = (token: string) => {
+  const login = (token: TToken) => {
     setToken(token);
-    localStorage.setItem("customerToken", token);
+    localStorage.setItem("customerToken", JSON.stringify(token));
   };
 
-  const logout = () => {
-    setToken(null);
+  async function logout() {
+    const customerToken = localStorage.getItem("customerToken");
+  
+    if (customerToken) {
+      const { accessToken } = JSON.parse(customerToken);
+  
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ accessToken }),
+      });
+    }
+  
     localStorage.removeItem("customerToken");
-  };
+    localStorage.removeItem("cartId");
+    localStorage.removeItem("checkoutUrl");
+
+    router.replace('/')
+    setToken(null)
+  }
+
+console.log('token -->> ', token);
 
   return (
     <AuthContext.Provider

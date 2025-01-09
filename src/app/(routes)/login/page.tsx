@@ -27,8 +27,8 @@ export default function Signin() {
         const { error } = await response.json();
         throw new Error(error);
       }
-
       const { token } = await response.json();
+      console.log('token ===> ', token);
       login(token)
 
       toast.success("Login successful! Redirecting to Home...");
@@ -44,7 +44,7 @@ export default function Signin() {
   };
 
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+    <div className="flex min-h-[calc(100vh_-_100px)] flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <Image
             alt="AMG Logo"
@@ -70,7 +70,7 @@ export default function Signin() {
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-black sm:text-sm/6"
 
                 />
                
@@ -83,9 +83,9 @@ export default function Signin() {
                   Password
                 </label>
                 <div className="text-sm">
-                  <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                  <Link href="forgot-password" className="font-semibold text-black hover:text-black">
                     Forgot password?
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="mt-2">
@@ -98,7 +98,7 @@ export default function Signin() {
                   autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-black sm:text-sm/6"
                 />
               </div>
             </div>
@@ -106,7 +106,7 @@ export default function Signin() {
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="flex w-full justify-center rounded-md bg-black px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
               >
                 Sign in
               </button>
@@ -115,7 +115,7 @@ export default function Signin() {
 
           <p className="mt-10 text-center text-sm/6 text-gray-500">
             Not have an account?{' '}
-            <Link href="/signup" className="font-semibold text-indigo-600 hover:text-indigo-500">
+            <Link href="/signup" className="font-semibold text-black hover:text-black">
               Signup
             </Link>
           </p>
