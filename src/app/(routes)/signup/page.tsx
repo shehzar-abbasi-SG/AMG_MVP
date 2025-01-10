@@ -25,7 +25,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 
-export const registrationSchema = z.object({
+const registrationSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z
     .string()
