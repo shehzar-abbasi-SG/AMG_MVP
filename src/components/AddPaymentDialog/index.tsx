@@ -91,7 +91,7 @@ export function PaymentMethodModal({open,onOpenChange}:PaymentMethodDialogProps)
               city: data.city,
               state: data.region,
               postal_code: data.postalCode,
-              country: data.country,
+              country: 'CA',
             },
           },
         });

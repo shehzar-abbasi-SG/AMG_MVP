@@ -24,7 +24,7 @@ export default function Home() {
     router.push(`/product/${productHandle}`);
   };
 
-
+console.log('products :>> ', products);
   useEffect(() => {
     const fetchProducts = async () => {
       try {

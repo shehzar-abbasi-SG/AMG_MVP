@@ -37,9 +37,8 @@ export async function POST(req: NextRequest) {
     });
 
     const data = await response.json();
-
-    if (data.errors || data.data.customerUserErrors?.length) {
-      const errors = data.errors || data.data.customerUserErrors;
+    if (data.errors || data.data.customerAccessTokenCreate.customerUserErrors?.length>0) {
+      const errors = data.errors || data.data.customerAccessTokenCreate.customerUserErrors;
       return NextResponse.json({ error: errors[0]?.message || "Error logging in." }, { status: 400 });
     }
     const token = data.data.customerAccessTokenCreate.customerAccessToken

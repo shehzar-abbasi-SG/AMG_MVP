@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(req: Request, { params }: { params: Promise<{ handle: string }> }) {
   const {handle} = await  params;
+  console.log('handle :>> ', handle);
   const query = `
       query GetProductByHandle($handle: String!) {
         product(handle: $handle) {
@@ -33,16 +34,6 @@ export async function GET(req: Request, { params }: { params: Promise<{ handle: 
               }
             }
           }
-          metafields(first: 100) {
-            edges {
-              node {
-                namespace
-                key
-                value
-                type
-              }
-            }
-          }
           productType
           vendor
           collections(first: 5) {
@@ -67,7 +58,6 @@ export async function GET(req: Request, { params }: { params: Promise<{ handle: 
       },
       body: JSON.stringify({ query, variables }),
     });
-
     if (!response.ok) {
       const text = await response.text();
       console.log("Shopify API error:", text);
@@ -75,6 +65,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ handle: 
     }
 
     const data = await response.json();
+    console.log('response :>> ', data);
 
     if (!data.data || !data.data.product) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
