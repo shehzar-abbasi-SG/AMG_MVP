@@ -19,9 +19,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
           
       }),
     };
-
-    console.log("line ==> ", line);
-
+    console.log('line :>> ', line);
     const response = await fetch(`${SHOPIFY_API_URL}`, {
       method: "POST",
       headers: {

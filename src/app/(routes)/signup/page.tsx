@@ -24,6 +24,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
+import { useState } from "react";
 
 const registrationSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -48,23 +49,23 @@ const registrationSchema = z.object({
 export default function Signup() {
 
   const router = useRouter();
-
+  const [isLoading,setIsLoading] = useState(false)
 
   const form = useForm<z.infer<typeof registrationSchema>>({
     resolver: zodResolver(registrationSchema),
     defaultValues: {
-      email: "",
-      password: "",
-      firstName: "",
-      lastName: "",
-      phone: "",
+      email: "shehzerabbasi552@gmail.com",
+      password: "Password123!",
+      firstName: "Shehzar",
+      lastName: "Abbasi",
+      phone: "+15142411011",
       country: "",
-      company: "",
-      address1: "",
-      address2: "",
-      city: "",
-      province: "",
-      zip: "",
+      company: "Stay Gold",
+      address1: "2170 Avenue Lincoln",
+      address2: "Apt 503",
+      city: "Montreal",
+      province: "Quebec",
+      zip: "H2N 2N7",
       referralSource: "",
     },
   })
@@ -73,6 +74,7 @@ export default function Signup() {
     // Handle form submission here
     console.log(values)
     const {email, password, firstName, lastName, phone, address1,address2,company,country,city,zip,province } = values
+    setIsLoading(true)
     try{
       const response = await fetch("/api/auth/signup", {
         method: "POST",
@@ -136,6 +138,8 @@ export default function Signup() {
             toast.error("Signup failed. Please try again.");
         }
 
+      }finally{
+        setIsLoading(false)
       }
   }
 
@@ -164,7 +168,11 @@ export default function Signup() {
                 <FormItem>
                   <FormLabel>First Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="John" {...field} />
+                    <Input placeholder="John" {...field} 
+                      className="focus:border focus:border-black focus-visible:ring-0 focus-visible:shadow-none"
+                    
+                    />
+
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -177,7 +185,10 @@ export default function Signup() {
                 <FormItem>
                   <FormLabel>Last Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Doe" {...field} />
+                    <Input placeholder="Doe" {...field}
+                      className="focus:border focus:border-black focus-visible:ring-0 focus-visible:shadow-none"
+                    
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -192,7 +203,10 @@ export default function Signup() {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input type="email" placeholder="john.doe@example.com" {...field} />
+                  <Input type="email" placeholder="john.doe@example.com" {...field} 
+                      className="focus:border focus:border-black focus-visible:ring-0 focus-visible:shadow-none"
+                  
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -206,7 +220,10 @@ export default function Signup() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} />
+                  <Input type="password" {...field} 
+                      className="focus:border focus:border-black focus-visible:ring-0 focus-visible:shadow-none"
+                  
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -220,7 +237,10 @@ export default function Signup() {
               <FormItem>
                 <FormLabel>Phone</FormLabel>
                 <FormControl>
-                  <Input type="tel" placeholder="+1 (555) 000-0000" {...field} />
+                  <Input type="tel" placeholder="+1 (555) 000-0000" {...field} 
+                      className="focus:border focus:border-black focus-visible:ring-0 focus-visible:shadow-none"
+                  
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -234,7 +254,10 @@ export default function Signup() {
               <FormItem>
                 <FormLabel>Company</FormLabel>
                 <FormControl>
-                  <Input placeholder="Company Name" {...field} />
+                  <Input placeholder="Company Name" {...field} 
+                      className="focus:border focus:border-black focus-visible:ring-0 focus-visible:shadow-none"
+                  
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -248,7 +271,10 @@ export default function Signup() {
               <FormItem>
                 <FormLabel>Address Line 1</FormLabel>
                 <FormControl>
-                  <Input placeholder="123 Main St" {...field} />
+                  <Input placeholder="123 Main St" {...field} 
+                      className="focus:border focus:border-black focus-visible:ring-0 focus-visible:shadow-none"
+                  
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -262,7 +288,10 @@ export default function Signup() {
               <FormItem>
                 <FormLabel>Address Line 2 (Optional)</FormLabel>
                 <FormControl>
-                  <Input placeholder="Apt 4B" {...field} />
+                  <Input placeholder="Apt 4B" {...field} 
+                      className="focus:border focus:border-black focus-visible:ring-0 focus-visible:shadow-none"
+                  
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -277,7 +306,10 @@ export default function Signup() {
                 <FormItem>
                   <FormLabel>City</FormLabel>
                   <FormControl>
-                    <Input placeholder="New York" {...field} />
+                    <Input placeholder="New York" {...field} 
+                      className="focus:border focus:border-black focus-visible:ring-0 focus-visible:shadow-none"
+                    
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -291,7 +323,10 @@ export default function Signup() {
                 <FormItem>
                   <FormLabel>State/Province</FormLabel>
                   <FormControl>
-                    <Input placeholder="NY" {...field} />
+                    <Input placeholder="NY" {...field}
+                    
+                    className="focus:border focus:border-black focus-visible:ring-0 focus-visible:shadow-none"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -331,7 +366,10 @@ export default function Signup() {
                 <FormItem>
                   <FormLabel>ZIP/Postal Code</FormLabel>
                   <FormControl>
-                    <Input placeholder="10001" {...field} />
+                    <Input placeholder="10001" {...field} 
+                      className="focus:border focus:border-black focus-visible:ring-0 focus-visible:shadow-none"
+                    
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -364,7 +402,7 @@ export default function Signup() {
             )}
           />
 
-          <Button type="submit" className="w-full">Register</Button>
+          <Button type="submit" disabled={isLoading} className="w-full">Register</Button>
         </form>
       </Form>
         <p className="mt-10 text-center text-sm/6 text-gray-500">

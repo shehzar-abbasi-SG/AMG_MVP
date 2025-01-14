@@ -40,11 +40,13 @@ export async function POST(req: NextRequest) {
 
     if (data.errors || data.data.customerUserErrors?.length) {
       const errors = data.errors || data.data.customerUserErrors;
-      return NextResponse.json({ error: errors[0]?.message || "Error updating address." }, { status: 400 });
+      return NextResponse.json({ error: errors[0]?.message || "Error logging in." }, { status: 400 });
     }
+    const token = data.data.customerAccessTokenCreate.customerAccessToken
+    if(!token) return NextResponse.json({ error: "Something went wrong." }, { status: 400 });
     return NextResponse.json({
       message: "Login successful",
-      token: data.data.customerAccessTokenCreate.customerAccessToken,
+      token
     });
   } catch (error) {
     console.log('error in login ===> ', error);

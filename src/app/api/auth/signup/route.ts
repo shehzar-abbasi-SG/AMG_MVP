@@ -41,7 +41,6 @@ export async function POST(req: NextRequest) {
     });
     const customerData = await customerResponse.json();
 
-    console.log('customerData ===> ', customerData);
     if(customerData.errors?.length){
       return NextResponse.json(
           { error: customerData.errors[0].message },

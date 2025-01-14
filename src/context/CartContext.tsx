@@ -94,8 +94,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   console.log('cartId :>> ', cartId);
 
   const addToCart = async (merchandiseId: string, quantity: number,isMediaSubmission?:boolean,properties?:any) => {
-    console.log('merchandiseId :==> ', merchandiseId);
-    console.log('quantity :==> ', quantity);
     try {
       let existingCartId = cartId
       if (!existingCartId) {
@@ -112,6 +110,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
           },
         }),
       };
+      console.log('payload ===> ', payload);
       const encodedCartId = encodeURIComponent(existingCartId!)
       const response = await fetch(`/api/cart/${encodedCartId}/add`, {
         method: "POST",

@@ -1,0 +1,28 @@
+1. Basic Card for Successful Payment:
+Card number: 4242 4242 4242 4242
+Expiration date: Any future date (e.g., 12/25)
+CVC: Any 3-digit number (e.g., 123)
+This card will simulate a successful payment.
+
+2. Card with Insufficient Funds:
+Card number: 4000 0000 0000 9995
+Expiration date: Any future date (e.g., 12/25)
+CVC: Any 3-digit number (e.g., 123)
+This card will simulate a payment failure due to insufficient funds.
+
+3. Declined Card:
+Card number: 4000 0000 0000 0002
+Expiration date: Any future date (e.g., 12/25)
+CVC: Any 3-digit number (e.g., 123)
+This card will simulate a declined payment.
+
+4. 3D Secure Authentication Required:
+Card number: 4000 0025 0000 3155
+Expiration date: Any future date (e.g., 12/25)
+CVC: Any 3-digit number (e.g., 123)
+This card simulates a payment that requires 3D Secure authentication.
+
+5. Card for Expired Payment:
+Card number: 4000 0000 0000 0069
+Expiration date: Any past date (e.g., 01/20)
+CVC: Any 3-digit number (e.g., 123)

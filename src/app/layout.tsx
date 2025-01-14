@@ -4,6 +4,8 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import dynamic from "next/dynamic";
 import Header from "@/components/Header";
+import { UserProvider } from "@/context/UserContext";
+import { OrdersProvider } from "@/context/OrdersContext";
 const AuthProvider = dynamic(() =>
   import("@/context/AuthContext").then(mod => ({
     default: mod.AuthProvider,
@@ -43,13 +45,17 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AuthProvider>
-          <CartProvider>
-            <Toaster position="top-center" reverseOrder={false}/>
-            <div className="bg-white text-black min-h-screen">
-              <Header/>
-              {children}
-            </div>
-          </CartProvider>
+          <UserProvider>
+            <CartProvider>
+              <OrdersProvider>
+                <Toaster position="top-center" reverseOrder={false}/>
+                <div className="bg-white text-black min-h-screen">
+                  <Header/>
+                  {children}
+                </div>
+              </OrdersProvider>
+            </CartProvider>
+          </UserProvider>
         </AuthProvider>
       </body>
     </html>

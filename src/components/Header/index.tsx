@@ -7,6 +7,7 @@ import { useCart } from '@/context/CartContext'
 import { ShoppingCartIcon, XMarkIcon,MinusIcon} from '@heroicons/react/16/solid'
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useAuth } from '@/context/AuthContext'
+import { useUser } from '@/context/UserContext'
 
 
 function Header() {
@@ -14,10 +15,12 @@ function Header() {
     const { cartItems,removeFromCart,checkoutUrl } = useCart();
     const [isCartOpen, setIsCartOpen] = useState(false);
     const {token,logout} = useAuth()
+    const {user} = useUser()
     const handleLogout = () => {
         logout()
     };
     const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    const initials = (user?.firstName|| "").substring(0,1).concat((user?.lastName||'').substring(0,1))
    
     const handleCheckout = async () => {
       try {
@@ -64,13 +67,14 @@ function Header() {
         <Link href={"/single-page-form"} className="bg-white text-black border border-black p-2 rounded-full">
           Submit Media
         </Link>
+        <Link href='/account' className="text-black hover:underline border border-black rounded-full p-2">{initials.toUpperCase()}</Link>
         <button
         onClick={() => setIsCartOpen(true)}
-        className="relative text-black"
+        className="relative text-black pr-2 pt-3"
         >
         <ShoppingCartIcon className="h-6 w-6" />
         {totalItems > 0 && (
-            <span className="absolute -top-2 -right-2 bg-indigo-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+            <span className="absolute top-0 right-0 bg-indigo-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
             {totalItems}
             </span>
         )}

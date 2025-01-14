@@ -71,3 +71,24 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+* {
+  overflow-y: auto;
+  /* Only reserve gutter when actively scrolling */
+  scrollbar-gutter: auto;
+}
+*::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+

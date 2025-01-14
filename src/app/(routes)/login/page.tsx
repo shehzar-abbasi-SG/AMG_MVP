@@ -1,4 +1,5 @@
 'use client'
+import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,16 +8,17 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 
 export default function Signin() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("shehzerabbasi552@gmail.com");
+  const [password, setPassword] = useState("Password123!");
+  const [isLoading,setIsLoading] = useState(false)
   const router = useRouter();
   const {login} = useAuth()
   
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    try {
+    setIsLoading(true)
+    try { 
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -40,6 +42,8 @@ export default function Signin() {
       toast.error("Login failed. Please try again.");
     }
 
+    }finally{
+      setIsLoading(false)
     }
   };
 
@@ -70,7 +74,7 @@ export default function Signin() {
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-black sm:text-sm/6"
+                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-1 focus:-outline-offset-1 focus:outline-black sm:text-sm/6"
 
                 />
                
@@ -98,18 +102,19 @@ export default function Signin() {
                   autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-black sm:text-sm/6"
+                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-1 focus:-outline-offset-1 focus:outline-black sm:text-sm/6"
                 />
               </div>
             </div>
 
             <div>
-              <button
-                type="submit"
-                className="flex w-full justify-center rounded-md bg-black px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-              >
-                Sign in
-              </button>
+            <Button 
+            type="submit"
+            className="w-full bg-black"
+            disabled={isLoading} 
+            >
+              Sign in
+            </Button>
             </div>
           </form>
 

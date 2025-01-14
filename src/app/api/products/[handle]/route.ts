@@ -33,7 +33,16 @@ export async function GET(req: Request, { params }: { params: Promise<{ handle: 
               }
             }
           }
-        
+          metafields(first: 100) {
+            edges {
+              node {
+                namespace
+                key
+                value
+                type
+              }
+            }
+          }
           productType
           vendor
           collections(first: 5) {

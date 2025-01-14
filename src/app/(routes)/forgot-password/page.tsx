@@ -87,6 +87,8 @@ export default function ForgotPasswordPage() {
                       type="email"
                       placeholder="Enter your email address"
                       {...field}
+                      className="focus:border focus:border-black focus-visible:ring-0 focus-visible:shadow-none"
+
                     />
                   </FormControl>
                   <FormMessage />

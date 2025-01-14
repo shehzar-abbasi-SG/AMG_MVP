@@ -21,11 +21,17 @@ export async function GET() {
                     currencyCode
                   }
                   selectedOptions {
-                      name
-                      value
+                    name
+                    value
                   }
                 }
               }
+            }
+           metafields(identifiers: [{namespace: "pc_product_options", key: "KeyholeMounts"}]) {
+              namespace
+              key
+              value
+              type
             }
           }
         }
@@ -48,19 +54,19 @@ export async function GET() {
     }
 
     const data = await response.json();
-    const records = data.data.products.edges.map((edge: any) => ({
-      id: edge.node.id,
-      title: edge.node.title,
-      handle: edge.node.handle,
-      variants: edge.node.variants.edges.map((variantEdge: any) => ({
-        id: variantEdge.node.id,
-        title: variantEdge.node.title,
-        price: variantEdge.node.price.amount,
-        currency: variantEdge.node.price.currencyCode,
-      })),
-    }));
+    // const records = data.data.products.edges.map((edge: any) => ({
+    //   id: edge.node.id,
+    //   title: edge.node.title,
+    //   handle: edge.node.handle,
+    //   variants: edge.node.variants.edges.map((variantEdge: any) => ({
+    //     id: variantEdge.node.id,
+    //     title: variantEdge.node.title,
+    //     price: variantEdge.node.price.amount,
+    //     currency: variantEdge.node.price.currencyCode,
+    //   })),
+    // }));
 
-    return NextResponse.json(records);
+    return NextResponse.json({records:[],data});
   } catch (error) {
     console.error("Error fetching records products:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

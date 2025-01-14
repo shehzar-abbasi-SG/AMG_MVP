@@ -20,11 +20,9 @@ async function getMediaFormVariants(){
     
 }
 export default async function SubmitMedia() {
-    const data = await getMediaFormVariants()
-    console.log('data ==>> ', data);
+    await getMediaFormVariants()
   return (
     <div>
-    <h1>{data.title}</h1>
     <Form/>
   </div>
   )

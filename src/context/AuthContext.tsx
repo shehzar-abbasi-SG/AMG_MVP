@@ -20,7 +20,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter()
 
   const validateCustomerToken = (customerToken:string|null, logoutCallback:()=>Promise<void>)=> {
-    console.log('customerToken :>> ', customerToken);
     try {
       if (!customerToken) {
         logoutCallback();
@@ -83,7 +82,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setToken(null)
   }
 
-console.log('token -->> ', token);
+
 
   return (
     <AuthContext.Provider

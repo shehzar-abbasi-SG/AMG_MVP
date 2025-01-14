@@ -122,6 +122,8 @@ export default function ResetPasswordPage() {
                     <Input
                       type="password"
                       placeholder="Enter your new password"
+                      className="focus:border focus:border-black focus-visible:ring-0 focus-visible:shadow-none"
+
                       {...field}
                     />
                   </FormControl>
@@ -140,6 +142,8 @@ export default function ResetPasswordPage() {
                     <Input
                       type="password"
                       placeholder="Confirm your new password"
+                      className="focus:border focus:border-black focus-visible:ring-0 focus-visible:shadow-none"
+
                       {...field}
                     />
                   </FormControl>

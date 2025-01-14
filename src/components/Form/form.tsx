@@ -1,6 +1,6 @@
 'use client'
 import { useCart } from '@/context/CartContext';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const MediaSubmissionForm = () => {
   // Array of media type options
@@ -18,6 +18,7 @@ const MediaSubmissionForm = () => {
     albumName: '',
     recordLabel: '',
     recordSize: '',
+    KeyholeMounts:"✓"
   });
 
   // Options for record size
@@ -35,6 +36,27 @@ const MediaSubmissionForm = () => {
     console.log('Form Data:', formData);
     addToCart("gid://shopify/ProductVariant/43526217236527",1,true,formData)
   };
+  const getProducts = async ()=>{
+      try {
+      
+        const response = await fetch(`/api/media-submission`);
+    
+        if (!response.ok) {
+          throw new Error('Failed to fetch media form data');
+        }
+    
+        const data = await response.json();
+        console.log("data===> ",data)
+        return data;
+      } catch (error) {
+        console.error('Error:', error);
+        throw error;
+      }
+    }
+
+    useEffect(()=>{
+      getProducts()
+    },[])
 
   return (
     <div className="max-w-md mx-auto p-4">
