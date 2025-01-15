@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import Header from "@/components/Header";
 import { UserProvider } from "@/context/UserContext";
 import { OrdersProvider } from "@/context/OrdersContext";
+import { ProductsProvider } from "@/context/ProductsContext";
 const AuthProvider = dynamic(() =>
   import("@/context/AuthContext").then(mod => ({
     default: mod.AuthProvider,
@@ -48,11 +49,13 @@ export default function RootLayout({
           <UserProvider>
             <CartProvider>
               <OrdersProvider>
-                <Toaster position="top-center" reverseOrder={false}/>
-                <div className="bg-white text-black min-h-screen">
-                  <Header/>
-                  {children}
-                </div>
+                <ProductsProvider>
+                  <Toaster position="top-center" reverseOrder={false}/>
+                  <div className="bg-white text-black min-h-screen">
+                    <Header/>
+                    {children}
+                  </div>
+                </ProductsProvider>
               </OrdersProvider>
             </CartProvider>
           </UserProvider>

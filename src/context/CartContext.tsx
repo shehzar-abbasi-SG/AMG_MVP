@@ -36,6 +36,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [checkoutUrl,setCheckoutUrl] = useState<string|null>("")
   const {token} = useAuth()
 
+  console.log('cartItems :>> ', cartItems);
 
   useEffect(() => {
     const storedCartId = localStorage.getItem("cartId");
@@ -91,7 +92,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       console.error("Error fetching cart:", error);
     }
   };
-  console.log('cartId :>> ', cartId);
 
   const addToCart = async (merchandiseId: string, quantity: number,isMediaSubmission?:boolean,properties?:any) => {
     try {
@@ -105,8 +105,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         ...(isMediaSubmission && properties && {
           properties: {
             ...properties,
-            customTitle: `Media Submission - ${properties.mediaType}`, 
-            customPrice: properties.price,
           },
         }),
       };

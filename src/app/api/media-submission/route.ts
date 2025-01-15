@@ -3,41 +3,38 @@ import { SHOPIFY_ACCESS_TOKEN, SHOPIFY_API_URL } from "@/config";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const query = `
-    {
-      products(first: 10, query: "tag:records") {
-        edges {
-          node {
-            id
-            title
-            handle
-            variants(first: 100) {
-              edges {
-                node {
-                  id
-                  title
-                  price {
-                    amount
-                    currencyCode
-                  }
-                  selectedOptions {
-                    name
-                    value
-                  }
-                }
+  const query =`{
+  products(query: "tag:records", first: 10) {
+    edges {
+      node {
+        id
+        title
+        handle
+        metafields(identifiers: [{key: "type_of_service", namespace: "custom"},{key: "keyhole_mount", namespace: "custom"},{key: "record_displayed", namespace: "custom"},{key: "insurance", namespace: "custom"}]) {
+          value
+          namespace
+          key
+        }
+        variants(first: 100) {
+          edges {
+            node {
+              id
+              selectedOptions {
+                name
+                value
               }
-            }
-           metafields(identifiers: [{namespace: "pc_product_options", key: "KeyholeMounts"}]) {
-              namespace
-              key
-              value
-              type
+              title
+              price {
+                amount
+                currencyCode
+              }
             }
           }
         }
       }
     }
-  `;
+  }
+}`
 
   try {
     const response = await fetch(SHOPIFY_API_URL, {
@@ -54,6 +51,7 @@ export async function GET() {
     }
 
     const data = await response.json();
+    console.log('data.data :>> ', data.data.products.edges);
     // const records = data.data.products.edges.map((edge: any) => ({
     //   id: edge.node.id,
     //   title: edge.node.title,
@@ -66,7 +64,7 @@ export async function GET() {
     //   })),
     // }));
 
-    return NextResponse.json({records:[],data});
+    return NextResponse.json({records:[],data:data.data.products.edges});
   } catch (error) {
     console.error("Error fetching records products:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
